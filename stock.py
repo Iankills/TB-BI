@@ -1,10 +1,12 @@
+# coding=utf-8
 import csv
 
-#Ouverture du csv
+# Ouverture du csv
 fname = "WalletTransactions.csv"
 file = open(fname, "rb")
 
-#Cette méthode ne sert à rien mais je la laisse pour peut être plus tard
+
+# Cette méthode ne sert à rien mais je la laisse pour peut être plus tard
 def sortAndCreateListProductObject():
     reader = csv.reader(file)
     listProductString = list()
@@ -21,7 +23,8 @@ def sortAndCreateListProductObject():
     print listProductObject
     print listProductObject.__len__()
 
-#Creation du stock initial avec tout les produits
+
+# Creation du stock initial avec tout les produits
 def createInitialStock():
     reader = csv.reader(file)
     listProductString = list()
@@ -29,16 +32,17 @@ def createInitialStock():
     dictProduct = {}
 
     for line in reader:
-        #print line[3]
+        # print line[3]
         if testDictProduct(dictProduct, line[3]):
             continue
         else:
-            dictProduct.update({line[3]:[]})
+            dictProduct.update({line[3]: []})
 
     print dictProduct
     print dictProduct.__len__()
 
-#test pour la création du stock initial
+
+# test pour la création du stock initial
 def testDictProduct(dictProduct, product):
     for mot in dictProduct:
         if mot == product:
@@ -46,12 +50,5 @@ def testDictProduct(dictProduct, product):
         else:
             return False
 
+#le main
 createInitialStock()
-
-
-
-
-
-
-
-
