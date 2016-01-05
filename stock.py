@@ -35,14 +35,15 @@ def addStock():
     reader = csv.reader(file)
     listProductString = list()
     listProductObject = list()
-    dictProduct = {'10MN MicroWarpdrive II':p1}
+    dictProduct = {'10MN MicroWarpdrive II':[]}
 
     for line in reader:
-        #print line[3]
-        if testDictProduct(dictProduct, line[3]):
-            continue
-        else:
-            dictProduct.update(line[3], [])
+        print line[3]
+        if testDictProduct(dictProduct, line[3]) == False:
+            dictIntermediaire = {line[3]:[]}
+            dictProduct.update(dictIntermediaire)
+
+    print dictProduct
 
 
 def testDictProduct(dictProduct, product):
@@ -50,9 +51,9 @@ def testDictProduct(dictProduct, product):
         if mot == product:
             return True
         else:
+            print "Faux"
             return False
 
-p1 = Product('10MN MicroWarpdrive II')
 #sortAndCreateListProductObject()
 addStock()
 
