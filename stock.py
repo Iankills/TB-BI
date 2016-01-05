@@ -1,29 +1,51 @@
 import csv
 import string
 
+#### Ouverture du csv ####
 fname = "WalletTransactions.csv"
 file = open(fname, "rb")
 
-reader = csv.reader(file)
+#### Classe Produit ####
+class Product:
+    def __init__(self, nameProduct):
+        self.nameProduct = nameProduct
+        self.listInstanceProduct = list()
 
-listProductString = list()
-listProductObject = list()
+def sortAndCreateListProductObject():
+    reader = csv.reader(file)
+    listProductString = list()
+    listProductObject = list()
 
-for line in reader:
+    for line in reader:
         vararecup = line[0].split(' ', 1)
         listProductString.append(line[3])
         listProductStringSet = list(set(listProductString))
         listProductStringSet.sort()
-        print listProductStringSet
+        #print listProductStringSet
 
-for lineProduct in listProductStringSet:
-    print lineProduct
-    lineProduct = list()
-    listProductObject.append(lineProduct)
+    for lineProduct in listProductStringSet:
+        #print lineProduct
+        listProductObject.append(lineProduct)
 
-print listProductObject.__len__()
+    print listProductObject
+    print listProductObject.__len__()
 
-class Product:
 
-    def __init__(self, productName):
-        self.productName = productName
+def addStock():
+    reader = csv.reader(file)
+    listProductString = list()
+    listProductObject = list()
+    dictProduct = {}
+
+    for line in reader:
+        print line[3]
+
+addStock()
+
+
+
+
+
+
+
+
