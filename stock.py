@@ -4,6 +4,7 @@ import csv
 # Ouverture du flux
 fileWalletTransaction = open('WalletTransactions.csv', 'rb')
 fileStockInitial = open('stock_initial.csv', 'rb')
+dictProduct = {}
 
 # Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
@@ -26,8 +27,7 @@ def sortAndCreateListProductObject():
 # Creation du stock initial avec tous les produits
 def createInitialStock():
     readerWalletT = csv.reader(fileWalletTransaction)
-    readerStockInitial = csv.reader(fileStockInitial)
-    dictProduct = {}
+    #readerStockInitial = csv.reader(fileStockInitial)
 
     for line in readerWalletT:
         if testDictProduct(dictProduct, line[3]):
@@ -35,17 +35,37 @@ def createInitialStock():
         else:
             dictProduct.update({line[3]: []})
             #dictProduct.update({line[3]: [line[0], line[2], line[4]]})
-    for line in readerStockInitial:
-        if testDictProduct(dictProduct, line[3]):
-            continue
-        else:
-            dictProduct.update({line[3]: []})
+    #for line in readerStockInitial:
+    #    if testDictProduct(dictProduct, line[3]):
+    #        continue
+    #    else:
+    #        dictProduct.update({line[3]: []})
 
     print dictProduct
     print dictProduct.__len__()
 
+def addStockInitial():
+    readerStockInitial = csv.reader(fileStockInitial)
+
+    for line in readerStockInitial:
+        lineStockInitial = line[0].split(';')
+
+        if testDictProduct(dictProduct, lineStockInitial[1]):
+            continue
+        else:
+            dictProduct.update({lineStockInitial[1]: []})
+
+        dateStockInitial = convertDateFormat(lineStockInitial[0])
+
+
 def updateSotck():
     print 'ok'
+
+def convertDateFormat(date):
+    dateFormated = date.split(';')
+    dateFormated = dateFormated[0].split('/')
+    dateFormated = dateFormated[2] + '-' + dateFormated[1] + '-' + dateFormated[0] + ' 00:00:00'
+    return dateFormated
 
 #test pour la création du stock initial
 def testDictProduct(dictProduct, product):
@@ -55,7 +75,15 @@ def testDictProduct(dictProduct, product):
         else:
             return False
 
-# le main
+
+#### le main ####
 createInitialStock()
+#print dictProduct
+addStockInitial()
+#print dictProduct
+
+
+
 # fermeture du flux
-file.close()
+fileWalletTransaction.close()
+fileStockInitial.close()
