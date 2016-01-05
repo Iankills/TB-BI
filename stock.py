@@ -2,7 +2,8 @@
 import csv
 
 # Ouverture du flux
-file = open("WalletTransactions.csv", "rb")
+fileWalletTransaction = open("WalletTransactions.csv", "rb")
+fileStockInitial = open("stock_initial.csv", "rb")
 
 # Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
@@ -24,23 +25,30 @@ def sortAndCreateListProductObject():
 
 # Creation du stock initial avec tous les produits
 def createInitialStock():
-    reader = csv.reader(file)
-    listProductString = list()
-    listProductObject = list()
+    readerWalletT = csv.reader(fileWalletTransaction)
+    readerStockInitial = csv.reader(fileStockInitial)
     dictProduct = {}
 
-    for line in reader:
-        # print line[3]
+    for line in readerWalletT:
         if testDictProduct(dictProduct, line[3]):
             continue
         else:
-            dictProduct.update({line[3]: [line[0], line[], line[], line[], line[]]})
+            dictProduct.update({line[3]: []})
+            #dictProduct.update({line[3]: [line[0], line[2], line[4]]})
+    for line in readerStockInitial:
+        if testDictProduct(dictProduct, line[3]):
+            continue
+        else:
+            dictProduct.update({line[3]: []})
 
     print dictProduct
     print dictProduct.__len__()
 
+def updateSotck():
 
-# test pour la création du stock initial
+    print "ok"
+
+#test pour la création du stock initial
 def testDictProduct(dictProduct, product):
     for mot in dictProduct:
         if mot == product:
