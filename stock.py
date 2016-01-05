@@ -22,3 +22,8 @@ for lineProduct in listProductStringSet:
     listProductObject.append(lineProduct)
 
 print listProductObject.__len__()
+
+class Product:
+
+    def __init__(self, productName):
+        self.productName = productName
