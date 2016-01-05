@@ -1,61 +1,52 @@
 import csv
-import string
 
-#### Ouverture du csv ####
+#Ouverture du csv
 fname = "WalletTransactions.csv"
 file = open(fname, "rb")
 
-#### Classe Produit ####
-class Product:
-    def __init__(self, nameProduct):
-        self.nameProduct = nameProduct
-        self.listInstanceProduct = list()
-
+#Cette méthode ne sert à rien mais je la laisse pour peut être plus tard
 def sortAndCreateListProductObject():
     reader = csv.reader(file)
     listProductString = list()
     listProductObject = list()
 
     for line in reader:
-        vararecup = line[0].split(' ', 1)
         listProductString.append(line[3])
         listProductStringSet = list(set(listProductString))
         listProductStringSet.sort()
-        #print listProductStringSet
 
     for lineProduct in listProductStringSet:
-        #print lineProduct
         listProductObject.append(lineProduct)
 
     print listProductObject
     print listProductObject.__len__()
 
-
-def addStock():
+#Creation du stock initial avec tout les produits
+def createInitialStock():
     reader = csv.reader(file)
     listProductString = list()
     listProductObject = list()
-    dictProduct = {'10MN MicroWarpdrive II':[]}
+    dictProduct = {}
 
     for line in reader:
-        print line[3]
-        if testDictProduct(dictProduct, line[3]) == False:
-            dictIntermediaire = {line[3]:[]}
-            dictProduct.update(dictIntermediaire)
+        #print line[3]
+        if testDictProduct(dictProduct, line[3]):
+            continue
+        else:
+            dictProduct.update({line[3]:[]})
 
     print dictProduct
+    print dictProduct.__len__()
 
-
+#test pour la création du stock initial
 def testDictProduct(dictProduct, product):
     for mot in dictProduct:
         if mot == product:
             return True
         else:
-            print "Faux"
             return False
 
-#sortAndCreateListProductObject()
-addStock()
+createInitialStock()
 
 
 
