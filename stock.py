@@ -35,15 +35,11 @@ def createInitialStock():
         else:
             dictProduct.update({line[3]: []})
             #dictProduct.update({line[3]: [line[0], line[2], line[4]]})
-    #for line in readerStockInitial:
-    #    if testDictProduct(dictProduct, line[3]):
-    #        continue
-    #    else:
-    #        dictProduct.update({line[3]: []})
 
     print dictProduct
     print dictProduct.__len__()
 
+# Ajout du stock initial à partir du csv
 def addStockInitial():
     readerStockInitial = csv.reader(fileStockInitial)
 
@@ -57,10 +53,11 @@ def addStockInitial():
 
         dateStockInitial = convertDateFormat(lineStockInitial[0])
 
-
+# maj du stock
 def updateSotck():
     print 'ok'
 
+# convertis la date du stock initial au format de celui de walletTransaction
 def convertDateFormat(date):
     dateFormated = date.split(';')
     dateFormated = dateFormated[0].split('/')
@@ -78,9 +75,7 @@ def testDictProduct(dictProduct, product):
 
 #### le main ####
 createInitialStock()
-#print dictProduct
 addStockInitial()
-#print dictProduct
 
 
 
