@@ -1,4 +1,9 @@
 import csv;
 
+import csv
 
-test
+
+fname = "WalletTransactions.csv"
+file = open(fname, "rb")
+
+
