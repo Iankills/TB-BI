@@ -1,12 +1,10 @@
 # coding=utf-8
 import csv
 
-# Ouverture du csv
-fname = "WalletTransactions.csv"
-file = open(fname, "rb")
+# Ouverture du flux
+file = open("WalletTransactions.csv", "rb")
 
-
-# Cette méthode ne sert à rien mais je la laisse pour peut être plus tard
+# Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
     reader = csv.reader(file)
     listProductString = list()
@@ -24,7 +22,7 @@ def sortAndCreateListProductObject():
     print listProductObject.__len__()
 
 
-# Creation du stock initial avec tout les produits
+# Creation du stock initial avec tous les produits
 def createInitialStock():
     reader = csv.reader(file)
     listProductString = list()
@@ -36,7 +34,7 @@ def createInitialStock():
         if testDictProduct(dictProduct, line[3]):
             continue
         else:
-            dictProduct.update({line[3]: []})
+            dictProduct.update({line[3]: [line[0], line[], line[], line[], line[]]})
 
     print dictProduct
     print dictProduct.__len__()
@@ -50,5 +48,7 @@ def testDictProduct(dictProduct, product):
         else:
             return False
 
-#le main
+# le main
 createInitialStock()
+# fermeture du flux
+file.close()
