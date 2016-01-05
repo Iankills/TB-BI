@@ -2,8 +2,8 @@
 import csv
 
 # Ouverture du flux
-fileWalletTransaction = open("WalletTransactions.csv", "rb")
-fileStockInitial = open("stock_initial.csv", "rb")
+fileWalletTransaction = open('WalletTransactions.csv', 'rb')
+fileStockInitial = open('stock_initial.csv', 'rb')
 
 # Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
@@ -45,8 +45,7 @@ def createInitialStock():
     print dictProduct.__len__()
 
 def updateSotck():
-
-    print "ok"
+    print 'ok'
 
 #test pour la création du stock initial
 def testDictProduct(dictProduct, product):
