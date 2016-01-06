@@ -53,6 +53,7 @@ def addStockInitial():
 
         dateStockInitial = convertDateFormat(lineStockInitial[0])
 
+
 # maj du stock
 def updateSotck():
     print 'ok'
@@ -63,6 +64,9 @@ def convertDateFormat(date):
     dateFormated = dateFormated[0].split('/')
     dateFormated = dateFormated[2] + '-' + dateFormated[1] + '-' + dateFormated[0] + ' 00:00:00'
     return dateFormated
+
+def insertInToStock(dictProduct, date, product, quantity):
+
 
 #test pour la création du stock initial
 def testDictProduct(dictProduct, product):
