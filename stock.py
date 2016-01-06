@@ -3,6 +3,7 @@ import csv
 
 # Ouverture du flux
 dictProduct = {}
+valeurStock = 0
 
 # Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
@@ -42,6 +43,7 @@ def createInitialStock():
 def addStockInitial():
     fileStockInitial = open('stock_initial.csv', 'rb')
     readerStockInitial = csv.reader(fileStockInitial)
+    global valeurStock
 
     for line in readerStockInitial:
         lineStockInitial = line[0].split(';')
@@ -50,6 +52,7 @@ def addStockInitial():
 
         for i in range(int(lineStockInitial[2])):
             dictProduct[lineStockInitial[1]].append(lineStockInitial[3])
+        valeurStock = int(lineStockInitial[2])*int(lineStockInitial[3])
 
     fileStockInitial.close()
 
@@ -89,18 +92,21 @@ def updateStock(date):
         if date == dateCSV[0]:
             if line[7] == 'Buy':
                 for i in range(int(line[2])):
-                    dictProduct[line[3]].append(line[4])
+                    prix = testExpo(line[4])
+                    dictProduct[line[3]].append(prix)
+                    valeurStock = valeurStock + prix
                 #print 'ajout OK'
             else:
                 for i in range(int(line[2])):
+                    prix = testExpo(line[4])
                     try:
                         dictProduct[line[3]].pop(0)
+                        valeurStock = valeurStock - prix
                         #print 'remove'
                     except:
                         continue
 
     fileWalletTransaction.close()
-    return calculValeurStock()
 
 def principale(c):
     fileWalletTransaction = open('WalletTransactions.csv', 'rb')
@@ -111,10 +117,10 @@ def principale(c):
         dateCSV = line[0].split(' ')
         updateStock(dateCSV[0])
         if (dateOld!=dateCSV[0]):
-            price = calculValeurStock()
-            lineAdd = str(dateCSV[0]) + ',' + str(price)
+            #price = calculValeurStock()
+            lineAdd = str(dateCSV[0]) + ',' + str(valeurStock)
             c.writelines(lineAdd)
-            print str(dateCSV[0]) + ' ' + str(price)
+            print str(dateCSV[0]) + ' ' + str(valeurStock)
         dateOld = dateCSV[0]
     fileWalletTransaction.close()
 
@@ -137,7 +143,7 @@ def testDictProduct(dictProduct, product):
 #### le main ####
 createInitialStock()
 addStockInitial()
-calculValeurStock()
+#calculValeurStock()
 with open("actifStock.csv", "w") as c:
     principale(c)
 
