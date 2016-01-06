@@ -36,8 +36,8 @@ def createInitialStock():
             dictProduct.update({line[3]: []})
             #dictProduct.update({line[3]: ["date;produit;1;prixUnitaire", "date;produit;1;prixUnitaire", ...]})
 
-    print dictProduct
-    print dictProduct.__len__()
+    #print dictProduct
+    #print dictProduct.__len__()
 
 # Ajout du stock initial à partir du csv
 def addStockInitial():
@@ -53,6 +53,11 @@ def addStockInitial():
 
         dateStockInitial = convertDateFormat(lineStockInitial[0])
 
+        for i in lineStockInitial[2]:
+            dictProduct[lineStockInitial[1]].append(lineStockInitial[3])
+            print i
+
+        print dictProduct
 
 # maj du stock
 def updateSotck():
@@ -64,9 +69,6 @@ def convertDateFormat(date):
     dateFormated = dateFormated[0].split('/')
     dateFormated = dateFormated[2] + '-' + dateFormated[1] + '-' + dateFormated[0] + ' 00:00:00'
     return dateFormated
-
-def insertInToStock(dictProduct, date, product, quantity):
-
 
 #test pour la création du stock initial
 def testDictProduct(dictProduct, product):
