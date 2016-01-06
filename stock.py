@@ -34,7 +34,7 @@ def createInitialStock():
             continue
         else:
             dictProduct.update({line[3]: []})
-            #dictProduct.update({line[3]: [line[0], line[2], line[4]]})
+            #dictProduct.update({line[3]: ["date;produit;1;prixUnitaire", "date;produit;1;prixUnitaire", ...]})
 
     print dictProduct
     print dictProduct.__len__()
