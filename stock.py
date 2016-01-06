@@ -2,17 +2,16 @@
 import csv
 
 # Ouverture du flux
-fileWalletTransaction = open('WalletTransactions.csv', 'rb')
-fileStockInitial = open('stock_initial.csv', 'rb')
 dictProduct = {}
 
 # Cette méthode ne sert à rien mais je la laisse pour une éventualité
 def sortAndCreateListProductObject():
-    reader = csv.reader(file)
+    fileWalletTransaction = open('WalletTransactions.csv', 'rb')
+    readerWalletT = csv.reader(fileWalletTransaction)
     listProductString = list()
     listProductObject = list()
 
-    for line in reader:
+    for line in readerWalletT:
         listProductString.append(line[3])
         listProductStringSet = list(set(listProductString))
         listProductStringSet.sort()
@@ -23,45 +22,77 @@ def sortAndCreateListProductObject():
     print listProductObject
     print listProductObject.__len__()
 
+    fileWalletTransaction.close()
+
 
 # Creation du stock initial avec tous les produits
 def createInitialStock():
+    fileWalletTransaction = open('WalletTransactions.csv', 'rb')
     readerWalletT = csv.reader(fileWalletTransaction)
-    #readerStockInitial = csv.reader(fileStockInitial)
 
     for line in readerWalletT:
         if testDictProduct(dictProduct, line[3]):
             continue
         else:
             dictProduct.update({line[3]: []})
-            #dictProduct.update({line[3]: ["date;produit;1;prixUnitaire", "date;produit;1;prixUnitaire", ...]})
 
-    #print dictProduct
-    #print dictProduct.__len__()
+    fileWalletTransaction.close()
 
 # Ajout du stock initial à partir du csv
 def addStockInitial():
+    fileStockInitial = open('stock_initial.csv', 'rb')
     readerStockInitial = csv.reader(fileStockInitial)
 
     for line in readerStockInitial:
         lineStockInitial = line[0].split(';')
 
-        if testDictProduct(dictProduct, lineStockInitial[1]):
-            continue
-        else:
-            dictProduct.update({lineStockInitial[1]: []})
-
         dateStockInitial = convertDateFormat(lineStockInitial[0])
 
-        for i in lineStockInitial[2]:
+        for i in range(int(lineStockInitial[2])):
             dictProduct[lineStockInitial[1]].append(lineStockInitial[3])
-            print i
 
-        print dictProduct
+    fileStockInitial.close()
+
+def calculValeurStock():
+    priceSum = 0
+
+    for produit in dictProduct:
+        for prix in dictProduct[produit]:
+            priceSum = priceSum + int(prix)
+
+    return priceSum
 
 # maj du stock
-def updateSotck():
-    print 'ok'
+def updateStock(date):
+    fileWalletTransaction = open('WalletTransactions.csv', 'rb')
+    readerWalletT = csv.reader(fileWalletTransaction)
+
+    for line in readerWalletT:
+        dateCSV = line[0].split(' ')
+        if date == dateCSV[0]:
+            if line[7] == 'Buy':
+                for i in range(int(line[2])):
+                    dictProduct[line[3]].append(line[4])
+                #print 'ajout OK'
+            else:
+                for i in range(int(line[2])):
+                    try:
+                        dictProduct[line[3]].pop(0)
+                        #print 'remove'
+                    except:
+                        continue
+
+    fileWalletTransaction.close()
+
+def principale():
+    fileWalletTransaction = open('WalletTransactions.csv', 'rb')
+    readerWalletT = csv.reader(fileWalletTransaction)
+    for line in readerWalletT:
+        dateCSV = line[0].split(' ')
+        updateStock(dateCSV)
+        c = csv.writer(open("actifStock.csv", "wb"))
+        c.writerow([dateCSV,calculValeurStock()])
+    fileWalletTransaction.close()
 
 # convertis la date du stock initial au format de celui de walletTransaction
 def convertDateFormat(date):
@@ -82,9 +113,8 @@ def testDictProduct(dictProduct, product):
 #### le main ####
 createInitialStock()
 addStockInitial()
+calculValeurStock()
+principale()
 
 
-
-# fermeture du flux
-fileWalletTransaction.close()
-fileStockInitial.close()
+print dictProduct
