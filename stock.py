@@ -58,9 +58,26 @@ def calculValeurStock():
 
     for produit in dictProduct:
         for prix in dictProduct[produit]:
-            priceSum = priceSum + int(prix)
+            price = testExpo(prix)
+            priceSum = priceSum + float(price)
 
     return priceSum
+
+def testExpo(line):
+    p = 1
+    i=0
+
+    if 'E' in line:
+        x = line.split('E',1)
+        j = int(x[1])
+        while i < j :
+            p = p*10
+            i = i+1
+        unitP = float(x[0])*p
+    else :
+        unitP = float(line)*p
+
+    return unitP
 
 # maj du stock
 def updateStock(date):
@@ -83,15 +100,22 @@ def updateStock(date):
                         continue
 
     fileWalletTransaction.close()
+    return calculValeurStock()
 
-def principale():
+def principale(c):
     fileWalletTransaction = open('WalletTransactions.csv', 'rb')
     readerWalletT = csv.reader(fileWalletTransaction)
+
+    dateOld = '0'
     for line in readerWalletT:
         dateCSV = line[0].split(' ')
-        updateStock(dateCSV)
-        c = csv.writer(open("actifStock.csv", "wb"))
-        c.writerow([dateCSV,calculValeurStock()])
+        updateStock(dateCSV[0])
+        if (dateOld!=dateCSV[0]):
+            price = calculValeurStock()
+            lineAdd = str(dateCSV[0]) + ',' + str(price)
+            c.writelines(lineAdd)
+            print str(dateCSV[0]) + ' ' + str(price)
+        dateOld = dateCSV[0]
     fileWalletTransaction.close()
 
 # convertis la date du stock initial au format de celui de walletTransaction
@@ -114,7 +138,7 @@ def testDictProduct(dictProduct, product):
 createInitialStock()
 addStockInitial()
 calculValeurStock()
-principale()
+with open("actifStock.csv", "w") as c:
+    principale(c)
 
 
-print dictProduct
